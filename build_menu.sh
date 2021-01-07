@@ -72,7 +72,7 @@ else
     # then unset them so they won't be hanging around in the shell.
     proxmox_password="${value_arr[@]: -3: 1}"
     ssh_password="${value_arr[@]: -1}"
-    value_arr=("${value_arr[@]: 0: 10}")
+    value_arr=("${value_arr[@]: 0: 11}")
 fi
 
 export proxmox_password
