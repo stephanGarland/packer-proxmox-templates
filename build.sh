@@ -7,11 +7,12 @@ build_conf="build.conf"
 
 help() {
     printf "\n"
-    echo "$0 (proxmox|debug) [VM_ROLE] [VM_SOCKETS] [VM_CORES] [VM_DISK] [VM_MEM] [VM_ZFS] [VM_ID]"
+    echo "$0 (proxmox|debug) [VM_NODE] [VM_ROLE] [VM_SOCKETS] [VM_CORES] [VM_DISK] [VM_MEM] [VM_ZFS] [VM_ID]"
     echo
     echo "proxmox   - Build and create a Proxmox VM template"
     echo "debug     - Debug Mode: Build and create a Proxmox VM template"
     echo
+    echo "VM_NODE     - Name of the node to lookup - defaults to pve"
     echo "VM_ROLE     - (prod|dev) - dev loads extra packages - defaults to prod"
     echo "VM_SOCKETS  - Number of sockets for template - defaults to 1"
     echo "VM_CORES    - Number of cores for template - defaults to 4"
@@ -64,15 +65,17 @@ target=${1:-}
 check_prereqs
 
 # These will override defaults set in build.conf
-vm_role=${2:-$default_vm_role}
-vm_cpu_type=${3-$default_cpu_type}
-vm_sockets=${4:-$default_vm_sockets}
-vm_cores=${5:-$default_vm_cores}
-vm_disk=${6:-$default_vm_disk}
-vm_mem=${7:-$default_vm_mem}
-vm_zfs=${8:-$default_vm_zfs}
-vm_zsh=${9:-$default_vm_zsh}
-vm_id=${10:-$default_vm_id}
+vm_node=${2:-$default_vm_node}
+vm_role=${3:-$default_vm_role}
+vm_cpu_type=${4-$default_cpu_type}
+vm_sockets=${5:-$default_vm_sockets}
+vm_cores=${6:-$default_vm_cores}
+vm_disk=${7:-$default_vm_disk}
+vm_mem=${8:-$default_vm_mem}
+vm_zfs=${9:-$default_vm_zfs}
+vm_zsh=${10:-$default_vm_zsh}
+vm_id=${11:-$default_vm_id}
+printf "\n==> Node: $vm_node"
 printf "\n==> VM ID: $vm_id"
 printf "\n==> User: $vm_default_user"
 printf "\n==> Role: $vm_role"

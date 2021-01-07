@@ -48,7 +48,7 @@
             "memory": "{{user `vm_mem`}}",
             "os": "l26",
             "http_directory": "http",
-            "node": "{{user vm_node_name`}}",
+            "node": "{{user `vm_node`}}",
             "network_adapters": [
               {
                 "model": "virtio",
