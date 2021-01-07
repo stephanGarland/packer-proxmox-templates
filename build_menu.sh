@@ -35,23 +35,23 @@ call_dialog() {
             --backtitle "Proxmox Template Creation" \
             --title "Create A New Template" \
             --form "Template Options" 15 50 0 \
-                "Node: "       1 1 "$vm_node"       1 10 10 0 \
-                "Net Bridge: " 2 1 "$vm_net_bridge" 2 10 10 0 \
-                "Role: "       2 1 "$vm_role"       3 10 10 0 \
-                "CPU Type: "   3 1 "$vm_cpu_type"   4 10 10 0 \
-                "Sockets: "    4 1 "$vm_sockets"    5 10 10 0 \
-                "Cores: "      5 1 "$vm_cores"      6 10 10 0 \
-                "Memory: "     6 1 "$vm_mem"        7 10 10 0 \
-                "Disk: "       7 1 "$vm_disk"       8 10 10 0 \
-                "ZFS: "        8 1 "$vm_zfs"        9 10 10 0 \
-                "ZFS: "        9 1 "$vm_zsh"        10 10 10 0 \
-                "VM ID: "      10 1 "$vm_id"        11 10 10 0 \
+                "Node: "       1 1 "$vm_node"       1 15 10 0 \
+                "Net Bridge: " 2 1 "$vm_net_bridge" 2 15 10 0 \
+                "Role: "       2 1 "$vm_role"       3 15 10 0 \
+                "CPU Type: "   3 1 "$vm_cpu_type"   4 15 10 0 \
+                "Sockets: "    4 1 "$vm_sockets"    5 15 10 0 \
+                "Cores: "      5 1 "$vm_cores"      6 15 10 0 \
+                "Memory: "     6 1 "$vm_mem"        7 15 10 0 \
+                "Disk: "       7 1 "$vm_disk"       8 15 10 0 \
+                "ZFS: "        8 1 "$vm_zfs"        9 15 10 0 \
+                "ZFS: "        9 1 "$vm_zsh"        10 15 10 0 \
+                "VM ID: "      10 1 "$vm_id"        11 15 10 0 \
             --and-widget --insecure \
             --title "Create A New Template" \
             --passwordform "Template Passwords" 15 50 0 \
-                "Proxmox Password: " 1 1 "$proxmox_pass" 1 32 32 0 \
-                "New SSH Password: " 2 1 "$ssh_pass1"    2 32 32 0 \
-                "New SSH Password: " 3 1 "$ssh_pass2"    3 32 32 0 \
+                "Proxmox Password: " 1 1 "$proxmox_pass" 1 20 32 0 \
+                "New SSH Password: " 2 1 "$ssh_pass1"    2 20 32 0 \
+                "New SSH Password: " 3 1 "$ssh_pass2"    3 20 32 0 \
             2>&1 1>&3 # Redirect stdout to fd3 and stderr to stdout
             )
     # Close fd3
