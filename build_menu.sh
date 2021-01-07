@@ -56,6 +56,7 @@ call_dialog() {
             )
     # Close fd3
     exec 3>&-
+    clear
 }
 
 check_prereqs
