@@ -7,7 +7,7 @@ build_conf="build.conf"
 
 help() {
     printf "\n"
-    echo "$0 (proxmox|debug) [VM_NODE] [VM_NET_BRIDGE] [VM_ROLE] [VM_SOCKETS] [VM_CORES] [VM_MEM] [VM_DISK] [VM_ZFS] [VM_ID]"
+    echo "$0 (proxmox|debug) [VM_NODE] [VM_NET_BRIDGE] [VM_ROLE] [VM_SOCKETS] [VM_CORES] [VM_MEM] [VM_DISK] [VM_ZFS] [VM_ZSH] [VM_ID]"
     echo
     echo "proxmox   - Build and create a Proxmox VM template"
     echo "debug     - Debug Mode: Build and create a Proxmox VM template"

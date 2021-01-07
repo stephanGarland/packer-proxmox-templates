@@ -44,7 +44,7 @@ call_dialog() {
                 "Memory: "     7 1 "$vm_mem"        7 15 10 0 \
                 "Disk: "       8 1 "$vm_disk"       8 15 10 0 \
                 "ZFS: "        9 1 "$vm_zfs"        9 15 10 0 \
-                "ZFS: "        10 1 "$vm_zsh"       10 15 10 0 \
+                "ZSH: "        10 1 "$vm_zsh"       10 15 10 0 \
                 "VM ID: "      11 1 "$vm_id"        11 15 10 0 \
             --and-widget --insecure \
             --title "Create A New Template" \
