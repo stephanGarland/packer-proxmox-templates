@@ -74,7 +74,7 @@ fi
 export $proxmox_password
 export $ssh_password
 
-../build.sh proxmox "${value_arr[@]}"
+source ../build.sh proxmox "${value_arr[@]}"
 
 unset proxmox_password
 unset ssh_password
