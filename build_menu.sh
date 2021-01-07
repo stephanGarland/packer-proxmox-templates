@@ -14,6 +14,7 @@ check_prereqs() {
 
 call_dialog() {
     vm_node="pve"
+    vm_net_bridge="vmbr0"
     vm_role="prod"
     vm_cpu_type="host"
     vm_sockets="1"
@@ -34,16 +35,17 @@ call_dialog() {
             --backtitle "Proxmox Template Creation" \
             --title "Create A New Template" \
             --form "Template Options" 15 50 0 \
-                "Node: "     1 1 "$vm_node"      1 10 10 0 \
-                "Role: "     2 1 "$vm_role"      2 10 10 0 \
-                "CPU Type: " 3 1 "$vm_cpu_type"  3 10 10 0 \
-                "Sockets: "  4 1 "$vm_sockets"   4 10 10 0 \
-                "Cores: "    5 1 "$vm_cores"     5 10 10 0 \
-                "Memory: "   6 1 "$vm_mem"       6 10 10 0 \
-                "Disk: "     7 1 "$vm_disk"      7 10 10 0 \
-                "ZFS: "      8 1 "$vm_zfs"       8 10 10 0 \
-                "ZFS: "      9 1 "$vm_zsh"       9 10 10 0 \
-                "VM ID: "    10 1 "$vm_id"       10 10 10 0 \
+                "Node: "       1 1 "$vm_node"       1 10 10 0 \
+                "Net Bridge: " 2 1 "$vm_net_bridge" 2 10 10 0 \
+                "Role: "       2 1 "$vm_role"       3 10 10 0 \
+                "CPU Type: "   3 1 "$vm_cpu_type"   4 10 10 0 \
+                "Sockets: "    4 1 "$vm_sockets"    5 10 10 0 \
+                "Cores: "      5 1 "$vm_cores"      6 10 10 0 \
+                "Memory: "     6 1 "$vm_mem"        7 10 10 0 \
+                "Disk: "       7 1 "$vm_disk"       8 10 10 0 \
+                "ZFS: "        8 1 "$vm_zfs"        9 10 10 0 \
+                "ZFS: "        9 1 "$vm_zsh"        10 10 10 0 \
+                "VM ID: "      10 1 "$vm_id"        11 10 10 0 \
             --and-widget --insecure \
             --title "Create A New Template" \
             --passwordform "Template Passwords" 15 50 0 \
@@ -67,7 +69,7 @@ if [[ ! "${value_arr[@]: -2: 1}" == "${value_arr[@]: -1}" ]]; then
     exit 1
 else
     # Slice elements from the end for the two passwords to pass to build.sh,
-    # then unset them so they won't be visibly passed on the command line.
+    # then unset them so they won't be hanging around in the shell.
     proxmox_password="${value_arr[@]: -3: 1}"
     ssh_password="${value_arr[@]: -1}"
     value_arr=("${value_arr[@]: 0: 10}")

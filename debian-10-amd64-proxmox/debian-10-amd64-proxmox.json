@@ -9,6 +9,8 @@
         "vm_name": "deb10-tmpl",
         "template_description": "Role: {{env `vm_role`}}\nDebian 10 x86_64 template built with Packer\nZFS support: {{env `vm_zfs`}}\nZSH customizations: {{env `vm_zsh`}}",
         "vm_default_user": "{{env `vm_default_user`}}",
+        "vm_node": "{{env `vm_node`}}",
+        "vm_net_bridge": "{{env `vm_net_bridge`}}",
         "vm_role": "{{env `vm_role`}}",
         "vm_sockets": "{{env `vm_sockets`}}",
         "vm_cores": "{{env `vm_cores`}}",
@@ -26,7 +28,7 @@
         "playbook_file": "./playbook/server-template.yml",
         "extra_arguments": [
           "-v",
-          "--extra-vars", "vm_default_user={{user `vm_default_user`}} vm_zfs={{user `vm_zfs`}} vm_zfs={{user `vm_zsh`}}",
+          "--extra-vars", "vm_default_user={{user `vm_default_user`}} vm_zfs={{user `vm_zfs`}} vm_zfs={{user `vm_zsh`}} vm_node={{user `vm_node`}} vm_net_bridge={{user `vm_net_bridge`}}",
           "--tags", "all,is_template"
         ],
         "ansible_env_vars": [ "ANSIBLE_CONFIG=./playbook/ansible.cfg", "ANSIBLE_FORCE_COLOR=True" ]
