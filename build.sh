@@ -61,7 +61,7 @@ target=${1:-}
 [[ "${1}" == "proxmox" ]] || [[ "${1}" == "debug" ]] || help
 
 ## check that prerequisites are installed
-#check_prereqs
+check_prereqs
 
 # These will override defaults set in build.conf
 vm_role=${2:-$default_vm_role}

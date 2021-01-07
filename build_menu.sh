@@ -55,7 +55,7 @@ call_dialog() {
     clear
 }
 
-#check_prereqs
+check_prereqs
 call_dialog
 
 # Convert the string to an array so we can easily check values, and pass them to build.sh
