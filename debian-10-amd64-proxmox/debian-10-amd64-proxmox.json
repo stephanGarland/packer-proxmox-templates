@@ -7,9 +7,15 @@
         "iso_filename": "{{user `iso_filename`}}",
         "vm_id": "{{user `vm_id`}}",
         "vm_name": "deb10-tmpl",
-        "template_description": "Debian 10 x86_64 template built with packer ({{user `vm_ver`}}). Username: {{env `vm_default_user`}}",
+        "template_description": "Role: {{env `vm_role`}}\nDebian 10 x86_64 template built with Packer\nZFS support: {{env `vm_zfs`}}\nZSH customizations: {{env `vm_zsh`}}",
         "vm_default_user": "{{env `vm_default_user`}}",
-        "vm_memory": "{{env `vm_memory`}}",
+        "vm_role": "{{env `vm_role`}}",
+        "vm_sockets": "{{env `vm_sockets`}}",
+        "vm_cores": "{{env `vm_cores`}}",
+        "vm_disk": "{{env `vm_disk`}}",
+        "vm_mem": "{{env `vm_mem`}}",
+        "vm_zfs": "{{env `vm_zfs`}}",
+        "vm_zsh": "{{env `vm_zsh`}}",
         "ssh_username": "root",
         "ssh_password": "{{user `ssh_password`}}"
     },
@@ -20,7 +26,7 @@
         "playbook_file": "./playbook/server-template.yml",
         "extra_arguments": [
           "-v",
-          "--extra-vars", "vm_default_user={{user `vm_default_user`}}",
+          "--extra-vars", "vm_default_user={{user `vm_default_user`}} vm_zfs={{user `vm_zfs`}} vm_zfs={{user `vm_zsh`}}",
           "--tags", "all,is_template"
         ],
         "ansible_env_vars": [ "ANSIBLE_CONFIG=./playbook/ansible.cfg", "ANSIBLE_FORCE_COLOR=True" ]
@@ -36,21 +42,23 @@
             "vm_id":  "{{user `vm_id`}}",
             "vm_name": "{{user `vm_name`}}",
             "template_description":"{{user `template_description`}}",
-            "memory": "{{user `vm_memory`}}",
-            "cores": "2",
+            "cpu_type": "{{user `vm_cpu_type`}}",
+            "sockets": "{{user `vm_sockets`}}",
+            "cores": "{{user `vm_cores`}}",
+            "memory": "{{user `vm_mem`}}",
             "os": "l26",
             "http_directory": "http",
-            "node": "proxmox",
+            "node": "{{user vm_node_name`}}",
             "network_adapters": [
               {
                 "model": "virtio",
-                "bridge": "vmbr1"
+                "bridge": "{{user `vm_net_bridge`}}"
               }
             ],
             "disks": [
               {
                 "type": "scsi",
-                "disk_size": "8G",
+                "disk_size": "{{user `vm_disk`}}",
                 "storage_pool": "local",
                 "storage_pool_type": "directory",
                 "format": "qcow2"

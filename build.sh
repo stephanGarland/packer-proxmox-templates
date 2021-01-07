@@ -5,16 +5,23 @@
 set -o allexport
 build_conf="build.conf"
 
-function help {
+help() {
     printf "\n"
-    echo "$0 (proxmox|debug [VM_ID])"
+    echo "$0 (proxmox|debug) [VM_ROLE] [VM_SOCKETS] [VM_CORES] [VM_DISK] [VM_MEM] [VM_ZFS] [VM_ID]"
     echo
     echo "proxmox   - Build and create a Proxmox VM template"
     echo "debug     - Debug Mode: Build and create a Proxmox VM template"
     echo
-    echo "VM_ID     - VM ID for new VM template (overrides default from build.conf)"
+    echo "VM_ROLE     - (prod|dev) - dev loads extra packages - defaults to prod"
+    echo "VM_SOCKETS  - Number of sockets for template - defaults to 1"
+    echo "VM_CORES    - Number of cores for template - defaults to 4"
+    echo "VM_DISK     - Size of disk (with suffix) - defaults to 8G"
+    echo "VM_MEM      - Size of RAM (in kilobytes) - defaults to 2048"
+    echo "VM_ZFS      - Build support for ZFS - defaults to false"
+    echo "VM_ZSH      - Add zsh customized with Oh My Zsh and some plugins - defaults to false"
+    echo "VM_ID       - ID for template - defaults to 999"
     echo
-    echo "Enter Passwwords when prompted or provide them via ENV variables:"
+    echo "Enter Passwords when prompted or provide them via ENV variables:"
     echo "(use a space in front of ' export' to keep passwords out of bash_history)"
     echo " export proxmox_password=MyLoginPassword"
     echo " export ssh_password=MyPasswordInVM"
@@ -22,9 +29,21 @@ function help {
     exit 0
 }
 
-function die_var_unset {
+die_var_unset() {
     echo "ERROR: Variable '$1' is required to be set. Please edit '${build_conf}' and set."
     exit 1
+}
+
+check_prereqs() {
+    for i in ansible j2 mkpasswd packer; do
+        command -v $i &> /dev/null
+        if [[ ! $? -eq 0 ]]; then
+            printf "\nThe following programs are required to be installed:\n\n"
+            printf "ansible\nj2\nmkpasswd\npacker\n"
+            printf "\nPlease install them, and try again\n"
+            exit 1
+        fi
+    done
 }
 
 ## check that data in build_conf is complete
@@ -41,19 +60,42 @@ source $build_conf
 target=${1:-}
 [[ "${1}" == "proxmox" ]] || [[ "${1}" == "debug" ]] || help
 
-## VM ID for new VM template (overrides default from build.conf)
-vm_id=${2:-$default_vm_id}
-printf "\n==> Using VM ID: $vm_id with default user: '$vm_default_user'\n"
+## check that prerequisites are installed
+#check_prereqs
+
+# These will override defaults set in build.conf
+vm_role=${2:-$default_vm_role}
+vm_cpu_type=${3-$default_cpu_type}
+vm_sockets=${4:-$default_vm_sockets}
+vm_cores=${5:-$default_vm_cores}
+vm_disk=${6:-$default_vm_disk}
+vm_mem=${7:-$default_vm_mem}
+vm_zfs=${8:-$default_vm_zfs}
+vm_zsh=${9:-$default_vm_zsh}
+vm_id=${10:-$default_vm_id}
+printf "\n==> VM ID: $vm_id"
+printf "\n==> User: $vm_default_user"
+printf "\n==> Role: $vm_role"
+printf "\n==> CPU Type: $vm_cpu_type"
+printf "\n==> Sockets: $vm_sockets"
+printf "\n==> Cores: $vm_cores"
+printf "\n==> Disk: $vm_disk"
+printf "\n==> Mem: $vm_mem"
+printf "\n==> ZFS: $vm_zfs"
+printf "\n==> ZSH: $vm_zsh\n"
+
+read -p "Continue with the above settings? (y/n) " -n 1 -r
+if [[ $REPLY =~ ^[Nn]$ ]]; then
+    printf "\nExiting\n"
+    exit 1
+else
+    printf "\nContinuing\n"
+fi
 
 ## template_name is based on name of current directory, check it exists
 template_name="${PWD##*/}.json"
 
 [[ -f $template_name ]] || { echo "Template (${template_name}) not found."; exit 1; }
-
-## check that prerequisites are installed
-[[ $(packer --version)  ]] || { echo "Please install 'Packer'"; exit 1; }
-[[ $(ansible --version)  ]] || { echo "Please install 'Ansible'"; exit 1; }
-[[ $(j2 --version)  ]] || { echo "Please install 'j2cli'"; exit 1; }
 
 ## If passwords are not set in env variable, prompt for them
 [[ -z "$proxmox_password" ]] && printf "\n" && read -s -p "Existing PROXMOX Login Password: " proxmox_password && printf "\n"
