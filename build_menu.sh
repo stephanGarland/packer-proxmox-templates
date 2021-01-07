@@ -71,8 +71,8 @@ else
     value_arr=("${value_arr[@]: 0: 9}")
 fi
 
-export $proxmox_password
-export $ssh_password
+export proxmox_password
+export ssh_password
 
 source ../build.sh proxmox "${value_arr[@]}"
 
