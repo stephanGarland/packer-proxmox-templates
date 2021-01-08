@@ -55,6 +55,7 @@ If you select the dev role, you'll get things that I think are important.
 - docker
 - gcloud
 - golang
+- kubectl
 - kubectx
 - linux-headers
 - terraform
@@ -98,16 +99,21 @@ Regardless of whether you select prod or dev, you're still getting things I thin
  
 ### Questions and Answers
 Q: Will you do this for another distribution?
+
 A: No, I stan Debian.
 
 Q: Really?
+
 A: Mostly. I might do RancherOS or pfSense eventually.
 
 Q: What about Ubuntu?
+
 A: [Debian, you peasant.](http://ars.userfriendly.org/cartoons/?id=19990301)
 
 Q: Will you do this for ESXi/Hyper-V/whatever-FreeNAS-calls-its-hypervisor?
+
 A: No.
 
 Q: Was this a tremendous waste of time for a task that you do maybe once every few years?
+
 A: Yes.
