@@ -1,124 +1,112 @@
-# packer-proxmox-templates
-:package: Packer templates for building Proxmox KVM images from ISO
+# Proxmox Builder
 
-- use the latest tagged version which has been tested more thoroughly than 'master'
+### Acknowledgement
+This is forked from [Christian Wagner's work](https://github.com/chriswayg/packer-proxmox-templates).
 
-#### [Debian ](https://www.debian.org/releases/) v10 (buster) [Packer Template](https://github.com/chriswayg/packer-proxmox-templates/tree/master/debian-10-amd64-proxmox) using Packer Proxmox Builder to build a Proxmox VM image template
+### Limitations
+Only the debian10-amd64 role has been modified. If you want to use another one, either use the original above, or submit a PR.
 
-#### [Ubuntu ](http://releases.ubuntu.com/) 18.04 (bionic) [Packer Template](https://github.com/chriswayg/packer-proxmox-templates/tree/master/ubuntu-18.04-amd64-proxmox) using Packer Proxmox Builder to build a Proxmox VM image template
+### Prerequisites
 
-#### [OpenBSD ](https://www.openbsd.org/index.html) 6 [Packer Template](https://github.com/chriswayg/packer-proxmox-templates/tree/master/openbsd-6-amd64-proxmox) using Packer Proxmox Builder to build a Proxmox VM image template
+-  [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) - tested on 2.10.
 
-#### [Alpine](https://wiki.alpinelinux.org/wiki/Alpine_Linux:Releases)  Linux [Packer Template](https://github.com/chriswayg/packer-proxmox-templates/tree/master/alpine3.10-qemu) using QEMU Builder to build a KVM image usable in Openstack or Proxmox
+-  [j2cli](https://github.com/kolypto/j2cli)
 
-#### [Alpine](https://wiki.alpinelinux.org/wiki/Alpine_Linux:Releases)  Linux [Packer Template](https://github.com/chriswayg/packer-proxmox-templates/tree/master/alpine-3.10-x86_64-proxmox) using Packer Proxmox Builder to build a Proxmox VM image template
+-  [dialog](https://invisible-island.net/dialog/) - optional, but it lets you use a glorious 90s menu.
 
+-  [Packer](https://github.com/hashicorp/packer/releases) - tested on v1.55 and v1.66.
 
-## Proxmox KVM image templates
-
-- downloads the ISO and places it in Proxmox
-- creates a Proxmox VM using Packer
-- builds the image using preseed.cfg (Debian/Ubuntu) and Ansible
-- stores it as a Proxmox Template
-- see README.md for Usage details on each template
-
-### Check Prerequisites
-
-The build script which will run the packer template is *configured to run on the Proxmox server*. Thus the following pre-requisites should be installed on the Proxmox server:
-
-- Ensure that [Proxmox 6](https://www.proxmox.com/en/downloads) is installed
-- Set up a DHCP server on `vmbr1` (for example `isc-dhcp-server`) see section [DHCP](https://github.com/chriswayg/ansible-proxmox/blob/master/tasks/main.yml)
-
-```
-printf  "Proxmox $(pveversion)\n"
-```
-
-- Install [Packer](https://www.packer.io/downloads.html) on the Proxmox server
-
-```
-apt -y install unzip
-packer_ver=1.5.5
-wget https://releases.hashicorp.com/packer/${packer_ver}/packer_${packer_ver}_linux_amd64.zip
-sudo unzip packer_${packer_ver}_linux_amd64.zip -d /usr/local/bin
-packer --version
-```
-
-- Install [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) on the Proxmox server
-
-```
-apt -y install python3-pip
-pip3 install ansible==2.7.10
-pip3 install py-bcrypt
-```
-
-- Install [j2cli](https://github.com/kolypto/j2cli) on the Proxmox server
-
-```
-pip3 install j2cli[yaml]
-```
-
-### Download the latest release of packer-proxmox-templates on the Proxmox server
-
-`wget https://github.com/chriswayg/packer-proxmox-templates/archive/v1.5.zip && unzip v1.5.zip && cd packer-proxmox-templates-*`
+-  [Proxmox](https://www.proxmox.com/en/downloads/category/iso-images-pve) VE 6
 
 ### Usage
+From within `debian-10-amd64-proxmox`, execute either `../build.sh` or `../build_menu.sh`. The former is from the original repo, with some modifications to support extra customizations. The latter requires dialog (might work with whiptail) to be installed, but is arguably easier to use than remembering 10 positional arguments. It includes the same default values as the non-TUI script, which you can modify as desired.
 
-On the Proxmox Server with Packer installed:
+#### Arguments
 
-```
-cd OSname-xy-amd64-proxmox
+- VM_NODE       - Name of the Proxmox node to look up - defaults to pve
+- VM_NET_BRIDGE - Network bridge to use - defaults to vmbr0
+- VM_ROLE       - (prod|dev) - dev loads extra packages - defaults to prod
+- VM_SOCKETS    - Number of sockets for template - defaults to 1
+- VM_CORES      - Number of cores for template - defaults to 4
+- VM_MEM        - Size of RAM (in kilobytes) - defaults to 2048
+- VM_DISK       - Size of disk (with suffix) - defaults to 8G
+- VM_ZFS        - Build support for ZFS - defaults to false
+- VM_ZSH        - Add zsh customized with Oh My Zsh and some plugins - defaults to false
+- VM_ID         - ID for template - defaults to 999
 
-# for example
-cd debian-10-amd64-proxmox
-cd ubuntu-18.04-amd64-proxmox
-cd openbsd-6-amd64-proxmox
+#### Things You Need To Change
+- In `debian-10-amd64-proxmox/playbook/server-template-vars.yml`, you'll need to replace my public key with yours. This sets up password-less SSH auth, so without a key, you're gonna have a bad time.
 
-```
+#### Things You Might Want To Change
+- `vmbr0` is usually the default network bridge in Proxmox. You may not want VMs being built to get an IP address handed out from there.
+- You may want to set a static IP. That's actually not handled here, it's in the `ansible-initial-server` repo that this one calls.
+- Speaking of, you may need to bump the version in `debian-10-amd64-proxmox/playbook/requirements.yml`. Check releases for [ansible-initial-server](https://github.com/stephanGarland/ansible-initial-server/releases).
 
-- edit `build.conf`, especially the Proxmox URL & ISO download links (for the latest distro version)
-- edit `playbook/server-template-vars.yml`, especially the SSH Key & regional repos
+#### Things This Doesn't Do
+- Set a user password. It could if you wanted to modify the user Ansible task, or run `passwd` as a shell task, or any other number of ways. Set it manually if you don't want to do those; also of note, this sets up password-less sudo so it's not really needed for most tasks.
 
-```sh
-../build.sh proxmox
-```
+#### Packages This May Install
+If you select the dev role, you'll get things that I think are important.
 
-- The template can be checked in the Proxmox GUI while it is being created
-- Login using the default username as set in `build.conf`
+- awscli
+- build-essential
+- consul
+- docker
+- gcloud
+- golang
+- kubectx
+- linux-headers
+- terraform
+- terragrunt
+- packer
+- vault
 
-### Build Options
+Also, the following Python libraries:
 
-```sh
-../build.sh (proxmox|debug [new_VM_ID])
+- ipython
+- jupyter
+- matplotlib
+- mypy
+- numpy
+- pandas
+- requests
+- seaborn
+- scipy
+- virtualenv
 
-proxmox    - Build and create a Proxmox VM template
-debug      - Debug Mode: Build and create a Proxmox VM template
+Regardless of whether you select prod or dev, you're still getting things I think are important.
 
-VM_ID     - VM ID for new VM template (or use default from build.conf)
+ - fail2ban
+ - git
+ - glances
+ - htop
+ - jq
+ - mc
+ - micro
+ - ncdu
+ - parallel
+ - pigz
+ - pv
+ - python3
+ - rclone
+ - screen
+ - silversearcher-ag
+ - tmux
+ - tree
+ - zsh
+ 
+### Questions and Answers
+Q: Will you do this for another distribution?
+A: No, I stan Debian.
 
-Enter Passwwords when prompted or provide them via ENV variables:
-(use a space in front of ' export' to keep passwords out of bash_history)
- export proxmox_password=MyLoginPassword
- export ssh_password=MyPasswordInVM
-```
+Q: Really?
+A: Mostly. I might do RancherOS or pfSense eventually.
 
-#### Build environment
+Q: What about Ubuntu?
+A: [Debian, you peasant.](http://ars.userfriendly.org/cartoons/?id=19990301)
 
-The Packer templates have been tested with the following versions of Packer and Ansible. If you use different versions, some details may need to be updated.
+Q: Will you do this for ESXi/Hyper-V/whatever-FreeNAS-calls-its-hypervisor?
+A: No.
 
-```sh
-printf  "$(lsb_release -d) $(cat /etc/debian_version)\n" && \
-  printf  "Proxmox $(pveversion)\n" &&
-  packer version && \
-  ansible --version |  sed -n '1p' && \
-  ansible --version |  sed -n '6p' && \
-  j2 --version
-
-        Description:	Debian GNU/Linux 10 (buster) 10.3
-        Proxmox pve-manager/6.1-8/806edfe1 (running kernel: 5.3.18-3-pve)
-        Packer v1.5.5
-        ansible 2.9.7
-          python version = 3.7.3 (default, Dec 20 2019, 18:57:59) [GCC 8.3.0]
-        j2cli 0.3.10, Jinja2 2.11.2
-```
-
-**NOTE:** For security reasons it would be preferable to build the Proxmox template images on a local Proxmox staging server (for example in a VM) and then to transfer the Proxmox templates using migration onto the live server(s).
+Q: Was this a tremendous waste of time for a task that you do maybe once every few years?
+A: Yes.
