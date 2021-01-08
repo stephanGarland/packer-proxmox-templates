@@ -46,6 +46,8 @@ From within `debian-10-amd64-proxmox`, execute either `../build.sh` or `../build
 #### Things This Doesn't Do
 - Set a user password. It could if you wanted to modify the user Ansible task, or run `passwd` as a shell task, or any other number of ways. Set it manually if you don't want to do those; also of note, this sets up password-less sudo so it's not really needed for most tasks.
 
+- Set up PATH for Golang if you don't use zsh. It's a trivial change to add it for bash. I don't, though, so... submit a PR.
+
 #### Packages This May Install
 If you select the dev role, you'll get things that I think are important.
 
