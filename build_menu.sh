@@ -5,7 +5,7 @@ check_prereqs() {
         command -v $i &> /dev/null
         if [[ ! $? -eq 0 ]]; then
             printf "\nThe following programs are required to be installed:\n\n"
-            printf "ansible\ndialog\nj2\nmkpasswd\npacker\n"
+            printf "ansible\ndialog\nj2cli\nmkpasswd\npacker\n"
             printf "\nPlease install them, and try again\n"
             exit 1
         fi
