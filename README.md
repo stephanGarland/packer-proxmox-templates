@@ -41,6 +41,7 @@ From within `debian-10-amd64-proxmox`, execute either `../build.sh` or `../build
 - `vmbr0` is usually the default network bridge in Proxmox. You may not want VMs being built to get an IP address handed out from there.
 - You may want to set a static IP. That's actually not handled here, it's in the `ansible-initial-server` repo that this one calls.
 - Speaking of, you may need to bump the version in `debian-10-amd64-proxmox/playbook/requirements.yml`. Check releases for [ansible-initial-server](https://github.com/stephanGarland/ansible-initial-server/releases).
+- Still speaking of, the above repo, in `files/20-motd-welcome` will create a lovely ASCII art image for you. Your terminal should be >= 125 columns wide to see it correctly. If you think 80 is the right number, please don't use my repos. Also, if you want to change it, clone that repo and edit the file, or clone that repo and remove the Ansible task.
 
 #### Things This Doesn't Do
 - Set a user password. It could if you wanted to modify the user Ansible task, or run `passwd` as a shell task, or any other number of ways. Set it manually if you don't want to do those; also of note, this sets up password-less sudo so it's not really needed for most tasks.
