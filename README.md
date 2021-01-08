@@ -48,6 +48,8 @@ From within `debian-10-amd64-proxmox`, execute either `../build.sh` or `../build
 
 - Set up PATH for Golang if you don't use zsh. It's a trivial change to add it for bash. I don't, though, so... submit a PR.
 
+- Make a unique hostname. It defaults to deb10-kvm. You'll want to modify it if you're going to spin up multiple copies. You can change the default in `debian-10-amd64-proxmox/playbook/server-template-vars.yml` if you'd like.
+
 #### Packages This May Install
 If you select the dev role, you'll get things that I think are important.
 
