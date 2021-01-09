@@ -57,6 +57,7 @@ If you select the dev role, you'll get things that I think are important.
 - build-essential
 - consul
 - docker
+- docker-compose
 - gcloud
 - golang
 - kubectl
@@ -79,6 +80,7 @@ Also, the following Python libraries:
 - seaborn
 - scipy
 - virtualenv
+- virtualenvwrapper
 
 Regardless of whether you select prod or dev, you're still getting things I think are important.
 
