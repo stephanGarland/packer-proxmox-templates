@@ -44,7 +44,6 @@
             "vm_id":  "{{user `vm_id`}}",
             "vm_name": "{{user `vm_name`}}",
             "template_description":"{{user `template_description`}}",
-            "cpu_type": "{{user `vm_cpu_type`}}",
             "sockets": "{{user `vm_sockets`}}",
             "cores": "{{user `vm_cores`}}",
             "memory": "{{user `vm_mem`}}",

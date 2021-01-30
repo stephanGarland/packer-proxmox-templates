@@ -16,13 +16,12 @@ call_dialog() {
     vm_node="pve"
     vm_net_bridge="vmbr0"
     vm_role="prod"
-    vm_cpu_type="host"
-    vm_sockets="1"
+    vm_sockets="2"
     vm_cores="4"
-    vm_mem="2048"
+    vm_mem="4096"
     vm_disk="8G"
-    vm_zfs="false"
-    vm_zsh="false"
+    vm_zfs="true"
+    vm_zsh="true"
     vm_id="999"
     proxmox_pass=""
     ssh_pass1=""
@@ -35,17 +34,16 @@ call_dialog() {
             --backtitle "Proxmox Template Creation" \
             --title "Create A New Template" \
             --form "Template Options" 20 50 0 \
-                "Node: "       1 1 "$vm_node"       1 15 10 0 \
-                "Net Bridge: " 2 1 "$vm_net_bridge" 2 15 10 0 \
-                "Role: "       3 1 "$vm_role"       3 15 10 0 \
-                "CPU Type: "   4 1 "$vm_cpu_type"   4 15 10 0 \
-                "Sockets: "    5 1 "$vm_sockets"    5 15 10 0 \
-                "Cores: "      6 1 "$vm_cores"      6 15 10 0 \
-                "Memory: "     7 1 "$vm_mem"        7 15 10 0 \
-                "Disk: "       8 1 "$vm_disk"       8 15 10 0 \
-                "ZFS: "        9 1 "$vm_zfs"        9 15 10 0 \
-                "ZSH: "        10 1 "$vm_zsh"       10 15 10 0 \
-                "VM ID: "      11 1 "$vm_id"        11 15 10 0 \
+                "Node: "       1  1 "$vm_node"       1 15 10 0 \
+                "Net Bridge: " 2  1 "$vm_net_bridge" 2 15 10 0 \
+                "Role: "       3  1 "$vm_role"       3 15 10 0 \
+                "Sockets: "    4  1 "$vm_sockets"    4 15 10 0 \
+                "Cores: "      5  1 "$vm_cores"      5 15 10 0 \
+                "Memory: "     6  1 "$vm_mem"        6 15 10 0 \
+                "Disk: "       7  1 "$vm_disk"       7 15 10 0 \
+                "ZFS: "        8  1 "$vm_zfs"        8 15 10 0 \
+                "ZSH: "        9  1 "$vm_zsh"        9 15 10 0 \
+                "VM ID: "      10 1 "$vm_id"        10 15 10 0 \
             --and-widget --insecure \
             --title "Create A New Template" \
             --passwordform "Template Passwords" 20 50 0 \
@@ -72,13 +70,14 @@ else
     # then unset them so they won't be hanging around in the shell.
     proxmox_password="${value_arr[@]: -3: 1}"
     ssh_password="${value_arr[@]: -1}"
-    value_arr=("${value_arr[@]: 0: 11}")
+    # This must be updated if options are added or removed to the list
+    value_arr=("${value_arr[@]: 0: 10}")
 fi
 
 export proxmox_password
 export ssh_password
 
-source ../build.sh proxmox "${value_arr[@]}"
+source ./build.sh proxmox "${value_arr[@]}"
 
 unset proxmox_password
 unset ssh_password
