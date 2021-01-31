@@ -85,6 +85,7 @@ Regardless of whether you select prod or dev, you're still getting things I thin
 
  - ansible
  - bc
+ - cloud-init
  - curl
  - etherwake
  - fail2ban
