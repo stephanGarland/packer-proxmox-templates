@@ -4,7 +4,7 @@
 This is forked from [Christian Wagner's work](https://github.com/chriswayg/packer-proxmox-templates).
 
 ### Limitations
-Only the debian10-amd64 role has been modified. If you want to use another one, either use the original above, or submit a PR.
+Only the debian10-amd64 role has been modified. If you want to use another one, either use the upstream, or submit a PR.
 
 ### Prerequisites
 
@@ -23,23 +23,23 @@ From within `debian-10-amd64-proxmox`, execute either `../build.sh` or `../build
 
 #### Arguments
 
-- VM_NODE       - Name of the Proxmox node to look up - defaults to pve
-- VM_NET_BRIDGE - Network bridge to use - defaults to vmbr0
-- VM_ROLE       - (prod|dev) - dev loads extra packages - defaults to prod
-- VM_SOCKETS    - Number of sockets for template - defaults to 1
-- VM_CORES      - Number of cores for template - defaults to 4
-- VM_MEM        - Size of RAM (in kilobytes) - defaults to 2048
-- VM_DISK       - Size of disk (with suffix) - defaults to 8G
-- VM_ZFS        - Build support for ZFS - defaults to false
-- VM_ZSH        - Add zsh customized with Oh My Zsh and some plugins - defaults to false
-- VM_ID         - ID for template - defaults to 999
+VM_NODE       - Name of the node to lookup - defaults to pve
+VM_NET_BRIDGE - Network bridge to use - defaults to vmbr0
+VM_ROLE       - (prod|dev) - dev loads extra packages - defaults to prod
+VM_SOCKETS    - Number of sockets for template - defaults to 2
+VM_CORES      - Number of cores for template - defaults to 4
+VM_MEM        - Size of RAM (in kilobytes) - defaults to 4096
+VM_DISK       - Size of disk (with suffix) - defaults to 8G
+VM_ZFS        - Build support for ZFS - defaults to true
+VM_ZSH        - Add zsh customized with Oh My Zsh and some plugins - defaults to true
+VM_ID         - ID for template - defaults to 999
 
 #### Things You Need To Change
 - In `debian-10-amd64-proxmox/playbook/server-template-vars.yml`, you'll need to replace my public key with yours. This sets up password-less SSH auth, so without a key, you're gonna have a bad time.
 
 #### Things You Might Want To Change
 - `vmbr0` is usually the default network bridge in Proxmox. You may not want VMs being built to get an IP address handed out from there.
-- You may want to set a static IP. That's actually not handled here, it's in the `ansible-initial-server` repo that this one calls.
+- Set a static IP. That's actually not handled here, it's in the `ansible-initial-server` repo that this one calls.
 - Speaking of, you may need to bump the version in `debian-10-amd64-proxmox/playbook/requirements.yml`. Check releases for [ansible-initial-server](https://github.com/stephanGarland/ansible-initial-server/releases).
 - Still speaking of, the above repo, in `files/20-motd-welcome` will create a lovely ASCII art image for you. Your terminal should be >= 125 columns wide to see it correctly. If you think 80 is the right number, please don't use my repos. Also, if you want to change it, clone that repo and edit the file, or clone that repo and remove the Ansible task.
 
@@ -48,7 +48,7 @@ From within `debian-10-amd64-proxmox`, execute either `../build.sh` or `../build
 
 - Set up PATH for Golang if you don't use zsh. It's a trivial change to add it for bash. I don't, though, so... submit a PR.
 
-- Make a unique hostname. It defaults to deb10-kvm. You'll want to modify it if you're going to spin up multiple copies. You can change the default in `debian-10-amd64-proxmox/playbook/server-template-vars.yml` if you'd like.
+- Make a unique hostname. It defaults to deb10-kvm. You can change the default in `debian-10-amd64-proxmox/playbook/server-template-vars.yml` if you'd like. Alternately, you can use Ansible (or some other tool) to change it for you in your VMs - that's what I'm doing.
 
 #### Packages This May Install
 If you select the dev role, you'll get things that I think are important.
@@ -56,15 +56,14 @@ If you select the dev role, you'll get things that I think are important.
 - awscli
 - build-essential
 - consul
-- docker
+- dialog
+- docker-ce
+- docker-ce-cli
 - docker-compose
-- gcloud
-- golang
+- google-cloud-sdk
 - kubectl
 - kubectx
-- linux-headers
 - terraform
-- terragrunt
 - packer
 - vault
 
@@ -84,6 +83,10 @@ Also, the following Python libraries:
 
 Regardless of whether you select prod or dev, you're still getting things I think are important.
 
+ - ansible
+ - bc
+ - curl
+ - etherwake
  - fail2ban
  - git
  - glances
@@ -93,12 +96,15 @@ Regardless of whether you select prod or dev, you're still getting things I thin
  - micro
  - ncdu
  - parallel
+ - parted
  - pigz
  - pv
  - python3
  - rclone
+ - rsync
  - screen
  - silversearcher-ag
+ - snmpd
  - tmux
  - tree
  - zsh
@@ -107,10 +113,6 @@ Regardless of whether you select prod or dev, you're still getting things I thin
 Q: Will you do this for another distribution?
 
 A: No, I stan Debian.
-
-Q: Really?
-
-A: Mostly. I might do RancherOS or pfSense eventually.
 
 Q: What about Ubuntu?
 
