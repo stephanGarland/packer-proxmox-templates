@@ -24,7 +24,7 @@ if [ "$MODE" != start ]; then
 fi
 
 # Only run from main interface.
-if [ "$IFACE" = eth0 ]; then
+if [ "$IFACE" = ens18 ]; then
   cp /etc/issue.original /etc/issue
   printf "SSH key fingerprint: \n$(ssh-keygen -l -f /etc/ssh/ssh_host_ecdsa_key.pub)\n\n" >> /etc/issue
   printf "Server Network Interface: $(ip -4 -br addr |  sed -n '2p')\n\n" >> /etc/issue
