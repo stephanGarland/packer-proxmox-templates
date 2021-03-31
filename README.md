@@ -24,14 +24,23 @@ From within `debian-10-amd64-proxmox`, execute either `../build.sh` or `../build
 #### Arguments
 
 VM_NODE       - Name of the node to lookup - defaults to pve
+
 VM_NET_BRIDGE - Network bridge to use - defaults to vmbr0
+
 VM_ROLE       - (prod|dev) - dev loads extra packages - defaults to prod
+
 VM_SOCKETS    - Number of sockets for template - defaults to 2
+
 VM_CORES      - Number of cores for template - defaults to 4
+
 VM_MEM        - Size of RAM (in kilobytes) - defaults to 4096
+
 VM_DISK       - Size of disk (with suffix) - defaults to 8G
+
 VM_ZFS        - Build support for ZFS - defaults to true
+
 VM_ZSH        - Add zsh customized with Oh My Zsh and some plugins - defaults to true
+
 VM_ID         - ID for template - defaults to 999
 
 #### Things You Need To Change
