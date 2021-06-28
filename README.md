@@ -93,11 +93,13 @@ Also, the following Python libraries:
 Regardless of whether you select prod or dev, you're still getting things I think are important.
 
  - ansible
+ - atop
  - bc
  - cloud-init
  - curl
  - etherwake
  - fail2ban
+ - fzf
  - git
  - glances
  - htop
@@ -111,9 +113,9 @@ Regardless of whether you select prod or dev, you're still getting things I thin
  - pv
  - python3
  - rclone
+ - ripgrep
  - rsync
  - screen
- - silversearcher-ag
  - snmpd
  - tmux
  - tree
