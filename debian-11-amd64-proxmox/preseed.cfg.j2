@@ -61,7 +61,7 @@ d-i pkgsel/upgrade select full-upgrade
 d-i pkgsel/update-policy select unattended-upgrades
 # Individual additional packages to install
 # - qemu-guest-agent for Packer and Proxmox; haveged random generator speeds up boot
-d-i pkgsel/include string openssh-server sudo qemu-guest-agent haveged python3-apt gpg
+d-i pkgsel/include string openssh-server sudo qemu-guest-agent haveged python3-apt
 d-i pkgsel/install-language-support boolean false
 # Do not report back on what software is installed, and what software is used
 popularity-contest popularity-contest/participate boolean false
