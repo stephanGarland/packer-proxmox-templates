@@ -7,7 +7,7 @@
         "iso_filename": "{{user `iso_filename`}}",
         "vm_id": "{{user `vm_id`}}",
         "vm_name": "deb10-tmpl",
-        "template_description": "Role: {{env `vm_role`}}\nDebian 10 x86_64 template built with Packer\nZFS support: {{env `vm_zfs`}}\nZSH customizations: {{env `vm_zsh`}}",
+        "template_description": "Role: {{env `vm_role`}}\nDebian 10 x86_64 template built with Packer\nZFS support: {{env `vm_zfs`}}",
         "vm_default_user": "{{env `vm_default_user`}}",
         "vm_node": "{{env `vm_node`}}",
         "vm_net_bridge": "{{env `vm_net_bridge`}}",
@@ -17,7 +17,6 @@
         "vm_disk": "{{env `vm_disk`}}",
         "vm_mem": "{{env `vm_mem`}}",
         "vm_zfs": "{{env `vm_zfs`}}",
-        "vm_zsh": "{{env `vm_zsh`}}",
         "ssh_username": "root",
         "ssh_password": "{{user `ssh_password`}}"
     },

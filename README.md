@@ -4,7 +4,8 @@
 This is forked from [Christian Wagner's work](https://github.com/chriswayg/packer-proxmox-templates).
 
 ### Limitations
-Only the debian10-amd64 role has been modified. If you want to use another one, either use the upstream, or submit a PR.
+Only the debian10-amd64 and debian11-amd64 roles have been modified. If you want to use another one, either use the upstream, or submit a PR. Also, the build scripts aren't necessarily backwards compatible with the debian10 template. It will probably work
+if you select a different release requirement (<2.0.0).
 
 ### Prerequisites
 
@@ -19,7 +20,7 @@ Only the debian10-amd64 role has been modified. If you want to use another one, 
 -  [Proxmox](https://www.proxmox.com/en/downloads/category/iso-images-pve) VE 6
 
 ### Usage
-From within `debian-10-amd64-proxmox`, execute either `../build.sh` or `../build_menu.sh`. The former is from the original repo, with some modifications to support extra customizations. The latter requires dialog (might work with whiptail) to be installed, but is arguably easier to use than remembering 10 positional arguments. It includes the same default values as the non-TUI script, which you can modify as desired.
+From within `debian-11-amd64-proxmox`, execute either `../build.sh` or `../build_menu.sh`. The former is from the original repo, with some modifications to support extra customizations. The latter requires dialog (might work with whiptail) to be installed, but is arguably easier to use than remembering 10 positional arguments. It includes the same default values as the non-TUI script, which you can modify as desired.
 
 #### Arguments
 
@@ -33,18 +34,16 @@ VM_SOCKETS    - Number of sockets for template - defaults to 2
 
 VM_CORES      - Number of cores for template - defaults to 4
 
-VM_MEM        - Size of RAM (in kilobytes) - defaults to 4096
+VM_MEM        - Size of RAM (in megabytes) - defaults to 8192
 
-VM_DISK       - Size of disk (with suffix) - defaults to 8G
+VM_DISK       - Size of disk (with suffix) - defaults to 32G
 
-VM_ZFS        - Build support for ZFS - defaults to true
-
-VM_ZSH        - Add zsh customized with Oh My Zsh and some plugins - defaults to true
+VM_ZFS        - Build support for ZFS - defaults to false
 
 VM_ID         - ID for template - defaults to 999
 
 #### Things You Need To Change
-- In `debian-10-amd64-proxmox/playbook/server-template-vars.yml`, you'll need to replace my public key with yours. This sets up password-less SSH auth, so without a key, you're gonna have a bad time.
+- In `debian-11-amd64-proxmox/playbook/server-template-vars.yml`, you'll need to replace my public key with yours. This sets up password-less SSH auth, so without a key, you're gonna have a bad time.
 
 #### Things You Might Want To Change
 - `vmbr0` is usually the default network bridge in Proxmox. You may not want VMs being built to get an IP address handed out from there.
