@@ -132,6 +132,9 @@ printf "\n=> Downloading Ansible role\n\n"
 ansible-galaxy install --force -p playbook/roles -r playbook/requirements.yml
 [[ -f playbook/roles/ansible-initial-server/tasks/main.yml ]] || { echo "Ansible role not found."; exit 1; }
 
+printf "\n=> Installing Ansible Galaxy Collections\n\n"
+ansible-galaxy collection install community.general
+
 # the vm_default_user name will be used by Packer and Ansible
 export vm_default_user=$vm_default_user
 export ssh_password=$ssh_password
