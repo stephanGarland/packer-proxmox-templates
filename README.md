@@ -66,9 +66,6 @@ If you select the dev role, you'll get things that I think are important.
 - build-essential
 - consul
 - dialog
-- docker-ce
-- docker-ce-cli
-- docker-compose
 - google-cloud-sdk
 - kubectl
 - kubectx
@@ -107,6 +104,7 @@ Regardless of whether you select prod or dev, you're still getting things I thin
  - mc
  - micro
  - ncdu
+ - neovim
  - parallel
  - parted
  - pigz
@@ -119,6 +117,7 @@ Regardless of whether you select prod or dev, you're still getting things I thin
  - snmpd
  - tmux
  - tree
+ - units
  - zsh
  
 ### Questions and Answers
