@@ -21,7 +21,6 @@ call_dialog() {
     vm_mem="8192"
     vm_disk="32G"
     vm_zfs="false"
-    vm_zsh="true"
     vm_id="999"
     proxmox_pass=""
     ssh_pass1=""
@@ -42,8 +41,7 @@ call_dialog() {
                 "Memory: "     6  1 "$vm_mem"        6 15 10 0 \
                 "Disk: "       7  1 "$vm_disk"       7 15 10 0 \
                 "ZFS: "        8  1 "$vm_zfs"        8 15 10 0 \
-                "ZSH: "        9  1 "$vm_zsh"        9 15 10 0 \
-                "VM ID: "      10 1 "$vm_id"        10 15 10 0 \
+                "VM ID: "      9  1 "$vm_id"         9 15 10 0 \
             --and-widget --insecure \
             --title "Create A New Template" \
             --passwordform "Template Passwords" 20 50 0 \
@@ -71,7 +69,7 @@ else
     proxmox_password="${value_arr[@]: -3: 1}"
     ssh_password="${value_arr[@]: -1}"
     # This must be updated if options are added or removed to the list
-    value_arr=("${value_arr[@]: 0: 10}")
+    value_arr=("${value_arr[@]: 0: 9}")
 fi
 
 export proxmox_password

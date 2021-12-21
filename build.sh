@@ -7,7 +7,7 @@ build_conf="build.conf"
 
 help() {
     printf "\n"
-    echo "$0 (proxmox|debug) [VM_NODE] [VM_NET_BRIDGE] [VM_ROLE] [VM_SOCKETS] [VM_CORES] [VM_MEM] [VM_DISK] [VM_ZFS] [VM_ZSH] [VM_ID]"
+    echo "$0 (proxmox|debug) [VM_NODE] [VM_NET_BRIDGE] [VM_ROLE] [VM_SOCKETS] [VM_CORES] [VM_MEM] [VM_DISK] [VM_ZFS] [VM_ID]"
     echo
     echo "proxmox   - Build and create a Proxmox VM template"
     echo "debug     - Debug Mode: Build and create a Proxmox VM template"
@@ -17,10 +17,9 @@ help() {
     echo "VM_ROLE       - (prod|dev) - dev loads extra packages - defaults to prod"
     echo "VM_SOCKETS    - Number of sockets for template - defaults to 2"
     echo "VM_CORES      - Number of cores for template - defaults to 4"
-    echo "VM_MEM        - Size of RAM (in kilobytes) - defaults to 4096"
-    echo "VM_DISK       - Size of disk (with suffix) - defaults to 8G"
-    echo "VM_ZFS        - Build support for ZFS - defaults to true"
-    echo "VM_ZSH        - Add zsh customized with Oh My Zsh and some plugins - defaults to true"
+    echo "VM_MEM        - Size of RAM (in kilobytes) - defaults to 8192"
+    echo "VM_DISK       - Size of disk (with suffix) - defaults to 832"
+    echo "VM_ZFS        - Build support for ZFS - defaults to false"
     echo "VM_ID         - ID for template - defaults to 999"
     echo
     echo "Enter Passwords when prompted or provide them via ENV variables:"
@@ -74,8 +73,7 @@ vm_cores=${6:-$default_vm_cores}
 vm_mem=${7-$default_vm_mem}
 vm_disk=${8:-$default_vm_disk}
 vm_zfs=${9:-$default_vm_zfs}
-vm_zsh=${10:-$default_vm_zsh}
-vm_id=${11:-$default_vm_id}
+vm_id=${10:-$default_vm_id}
 printf "\n==> Node: $vm_node"
 printf "\n==> Net Bridge: $vm_net_bridge"
 printf "\n==> VM ID: $vm_id"
@@ -85,8 +83,7 @@ printf "\n==> Sockets: $vm_sockets"
 printf "\n==> Cores: $vm_cores"
 printf "\n==> Mem: $vm_mem"
 printf "\n==> Disk: $vm_disk"
-printf "\n==> ZFS: $vm_zfs"
-printf "\n==> ZSH: $vm_zsh\n"
+printf "\n==> ZFS: $vm_zfs\n"
 
 read -p "Continue with the above settings? (y/n) " -n 1 -r
 if [[ $REPLY =~ ^[Nn]$ ]]; then
