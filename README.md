@@ -36,7 +36,7 @@ VM_CORES      - Number of cores for template - defaults to 4
 
 VM_MEM        - Size of RAM (in megabytes) - defaults to 8192
 
-VM_DISK       - Size of disk (with suffix) - defaults to 32G
+VM_DISK       - Size of disk (with suffix) - defaults to 8G
 
 VM_ZFS        - Build support for ZFS - defaults to false
 

@@ -17,8 +17,8 @@ help() {
     echo "VM_ROLE       - (prod|dev) - dev loads extra packages - defaults to prod"
     echo "VM_SOCKETS    - Number of sockets for template - defaults to 2"
     echo "VM_CORES      - Number of cores for template - defaults to 4"
-    echo "VM_MEM        - Size of RAM (in kilobytes) - defaults to 8192"
-    echo "VM_DISK       - Size of disk (with suffix) - defaults to 832"
+    echo "VM_MEM        - Size of RAM (in megabytes) - defaults to 8192"
+    echo "VM_DISK       - Size of disk (with suffix) - defaults to 8G"
     echo "VM_ZFS        - Build support for ZFS - defaults to false"
     echo "VM_ID         - ID for template - defaults to 999"
     echo

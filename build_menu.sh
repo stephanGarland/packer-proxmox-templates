@@ -19,7 +19,7 @@ call_dialog() {
     vm_sockets="2"
     vm_cores="4"
     vm_mem="8192"
-    vm_disk="32G"
+    vm_disk="8G"
     vm_zfs="false"
     vm_id="999"
     proxmox_pass=""
