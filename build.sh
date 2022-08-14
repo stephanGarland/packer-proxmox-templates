@@ -129,7 +129,6 @@ printf "\n=> Downloading Ansible role\n\n"
 if (! ansible-galaxy install --force -p playbook/roles -r playbook/requirements.yml); then
     printf "\nIs the ansible Python library installed?\n"
 fi
-
 [[ -f playbook/roles/ansible-initial-server/tasks/main.yml ]] || { echo "Ansible role not found."; exit 1; }
 
 # the vm_default_user name will be used by Packer and Ansible
@@ -146,7 +145,9 @@ if [[ -f preseed.cfg.j2 ]]; then
     export password_hash1=$(mkpasswd -R 1000000 -m sha-512 $ssh_password)
     export password_hash2=$(mkpasswd -R 1000000 -m sha-512 $ssh_password)
     printf "\n=> Customizing auto preseed.cfg\n"
-    j2 preseed.cfg.j2 > http/preseed.cfg
+    if (! j2 preseed.cfg.j2 > http/preseed.cfg); then
+        printf "\nIs the j2cli Python library installed?\n"
+    fi
     [[ -f http/preseed.cfg ]] || { echo "Customized preseed.cfg file not found."; exit 1; }
 fi
 
