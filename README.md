@@ -126,7 +126,7 @@ A: No, I stan Debian.
 
 Q: What about Ubuntu?
 
-A: [Debian, you peasant.](http://ars.userfriendly.org/cartoons/?id=19990301)
+A: [Debian, you peasant.](https://web.archive.org/web/20210322171735/http://ars.userfriendly.org/cartoons/?id=19990301)
 
 Q: Will you do this for ESXi/Hyper-V/whatever-FreeNAS-calls-its-hypervisor?
 
