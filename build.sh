@@ -24,6 +24,7 @@ help() {
     echo
     echo "Enter Passwords when prompted or provide them via ENV variables:"
     echo "(use a space in front of ' export' to keep passwords out of bash_history)"
+    echo " export proxmox_username=root@pam OR root@pam!<token id>"
     echo " export proxmox_password=MyLoginPassword"
     echo " export proxmox_token=MyProxmoxToken"
     echo " export proxmox_url=https://xxx.xxx.xxx.xxx:8006/api2/json"
@@ -53,6 +54,7 @@ check_prereqs() {
 [[ -f $build_conf ]] || { echo "User variables file '$build_conf' not found."; exit 1; }
 source $build_conf
 
+[[ -z "$proxmox_username" ]] && die_var_unset "proxmox_username"
 [[ -z "$proxmox_url" ]] && die_var_unset "proxmox_url"
 [[ -z "$vm_default_user" ]] && die_var_unset "vm_default_user"
 [[ -z "$default_vm_id" ]] && die_var_unset "default_vm_id"
