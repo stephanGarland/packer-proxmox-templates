@@ -14,24 +14,26 @@ help() {
     echo
     echo "VM_NODE       - Name of the node to lookup - defaults to pve"
     echo "VM_NET_BRIDGE - Network bridge to use - defaults to vmbr0"
-    echo "VM_ROLE       - (prod|dev) - dev loads extra packages - defaults to prod"
-    echo "VM_SOCKETS    - Number of sockets for template - defaults to 1"
+    echo "VM_ROLE       - (prod|dev) - dev loads extra packages - defaults to dev"
+    echo "VM_SOCKETS    - Number of sockets for template - defaults to 2"
     echo "VM_CORES      - Number of cores for template - defaults to 4"
-    echo "VM_MEM        - Size of RAM (in megabytes) - defaults to 24576"
+    echo "VM_MEM        - Size of RAM (in megabytes) - defaults to 16384"
     echo "VM_DISK       - Size of disk (with suffix) - defaults to 16G"
-    echo "VM_ZFS        - Build support for ZFS - defaults to true"
+    echo "VM_ZFS        - Build support for ZFS - defaults to false"
     echo "VM_ID         - ID for template - defaults to 999"
     echo
     echo "Enter Passwords when prompted or provide them via ENV variables:"
     echo "(use a space in front of ' export' to keep passwords out of bash_history)"
     echo " export proxmox_password=MyLoginPassword"
+    echo " export proxmox_token=MyProxmoxToken"
+    echo " export proxmox_url=https://xxx.xxx.xxx.xxx:8006/api2/json"
     echo " export ssh_password=MyPasswordInVM"
     printf "\n"
     exit 0
 }
 
 die_var_unset() {
-    echo "ERROR: Variable '$1' is required to be set. Please edit '${build_conf}' and set."
+    echo "ERROR: Variable '$1' is required to be set. Please edit '${build_conf}' and set, or export it."
     exit 1
 }
 
@@ -40,7 +42,7 @@ check_prereqs() {
         command -v $i &> /dev/null
         if [[ ! $? -eq 0 ]]; then
             printf "\nThe following programs are required to be installed:\n\n"
-            printf "ansible\nj2cli\nmkpasswd\npacker\n"
+            printf "ansible\nj2cli\nmkpasswd (package whois)\npacker\n"
             printf "\nPlease install them, and try again\n"
             exit 1
         fi
@@ -51,6 +53,7 @@ check_prereqs() {
 [[ -f $build_conf ]] || { echo "User variables file '$build_conf' not found."; exit 1; }
 source $build_conf
 
+[[ -z "$proxmox_url" ]] && die_var_unset "proxmox_url"
 [[ -z "$vm_default_user" ]] && die_var_unset "vm_default_user"
 [[ -z "$default_vm_id" ]] && die_var_unset "default_vm_id"
 [[ -z "$iso_url" ]] && die_var_unset "iso_url"
@@ -113,8 +116,8 @@ if [[ -z "$ssh_password" ]]; then
     done
 fi
 
-[[ -z "$proxmox_password" ]] && echo "The Proxmox Password is required." && exit 1
-[[ -z "$ssh_password" ]] && echo "The SSH Password is required." && exit 1
+[[ -z "$proxmox_password" && -z "$proxmox_token" ]] && echo "A password or API token is required" && exit 1
+[[ -z "$ssh_password" ]] && echo "An SSH password is required for the VM" && exit 1
 
 ## download ISO and Ansible role
 printf "\n=> Downloading and checking ISO\n\n"
@@ -168,11 +171,11 @@ case $target in
     proxmox)
         printf "\n==> Build and create a Proxmox template.\n\n"
         # single quotes such as -var 'vm_id=$vm_id' do not work here
-        packer build -var iso_filename=$iso_filename -var vm_ver=$vm_ver -var vm_id=$vm_id -var proxmox_password=$proxmox_password -var ssh_password=$ssh_password $template_name
+        packer build -var iso_filename=$iso_filename -var vm_ver=$vm_ver -var vm_id=$vm_id -var proxmox_password=$proxmox_password -var proxmox_token=$proxmox_token -var ssh_password=$ssh_password $template_name
         ;;
     debug)
         printf "\n==> DEBUG: Build and create a Proxmox template.\n\n"
-        PACKER_LOG=1 packer build -debug -on-error=ask -var iso_filename=$iso_filename -var vm_ver=$vm_ver -var vm_id=$vm_id -var proxmox_password=$proxmox_password -var ssh_password=$ssh_password $template_name
+        PACKER_LOG=1 packer build -debug -on-error=ask -var iso_filename=$iso_filename -var vm_ver=$vm_ver -var vm_id=$vm_id -var proxmox_password=$proxmox_password -var proxmox_token=$proxmox_token -var ssh_password=$ssh_password $template_name
         ;;
     *)
         help

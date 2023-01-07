@@ -5,7 +5,7 @@ check_prereqs() {
         command -v $i &> /dev/null
         if [[ ! $? -eq 0 ]]; then
             printf "\nThe following programs are required to be installed:\n\n"
-            printf "ansible\ndialog\nj2cli\nmkpasswd\npacker\n"
+            printf "ansible\ndialog\nj2cli\nmkpasswd (package whois)\npacker\n"
             printf "\nPlease install them, and try again\n"
             exit 1
         fi
@@ -15,12 +15,12 @@ check_prereqs() {
 call_dialog() {
     vm_node="pve"
     vm_net_bridge="vmbr0"
-    vm_role="prod"
-    vm_sockets="1"
+    vm_role="dev"
+    vm_sockets="2"
     vm_cores="4"
-    vm_mem="24576"
+    vm_mem="16384"
     vm_disk="16G"
-    vm_zfs="true"
+    vm_zfs="false"
     vm_id="999"
     proxmox_pass=""
     ssh_pass1=""
