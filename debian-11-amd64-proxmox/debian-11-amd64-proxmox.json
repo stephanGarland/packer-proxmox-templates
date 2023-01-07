@@ -1,9 +1,9 @@
 {
     "description": "Build Debian 11 (bullseye) x86_64 Proxmox template",
     "variables": {
-        "proxmox_url": "{{user `proxmox_url`}}",
-        "proxmox_username": "{{user `proxmox_username`}}",
-        "proxmox_password": "{{user `proxmox_password`}}",
+        "proxmox_url": "{{env `proxmox_url`}}",
+        "proxmox_username": "{{env `proxmox_username`}}",
+        "proxmox_password": "{{env `proxmox_password`}}",
         "proxmox_token": "{{env `proxmox_token`}",
         "iso_filename": "{{user `iso_filename`}}",
         "vm_id": "{{user `vm_id`}}",
