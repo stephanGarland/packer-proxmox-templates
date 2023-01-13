@@ -18,12 +18,9 @@ This differs from upstream in several ways, most notably the absence of anything
 
 -  Installs p10k and a custom theme
 
--  Installs neovim, plugged, and various plugins*
+-  Installs neovim, plugged, and various plugins
 
 -  Optionally builds Python from source with full optimizations
-
-\* Note: Due to difficulties in getting neovim to headlessly install some of the plugins, it is required that the user run
-`:PlugInstall` and `:CHADdeps` upon first run.
 
 ### Limitations
 
